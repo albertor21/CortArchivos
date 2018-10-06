@@ -1,0 +1,61 @@
+unit Funciones;
+
+interface
+
+implementation
+
+function inttostr(i: integer): string;
+begin
+  str(i, Result);
+end;
+
+procedure logotipo;
+ begin
+ writeln('***********************************************');
+ writeln('    ©©     ©©©   ©     ©   ©©©');
+ writeln('   ©  ©    ©  ©  ©     ©  ©   ');
+ writeln('  ©    ©   ©  ©   ©   ©   ©       ©©    ©©  ©');
+ writeln('  ©©©©©©   ©©     ©   ©    ©©©   ©  ©  ©    ©©');
+ writeln(' ©      ©  © ©     © ©        ©  ©  ©  ©©   ©');
+ writeln(' ©      ©  ©  ©     ©     ©©©©    ©©   ©    ©');
+ writeln;
+ writeln('               CortArchivos 2.0');
+ writeln('***********************************************');
+end;
+
+function StrRScan(Str: PChar; Chr: Char): PChar; assembler;
+asm
+        PUSH    EDI
+        MOV     EDI,Str
+        MOV     ECX,0FFFFFFFFH
+        XOR     AL,AL
+        REPNE   SCASB
+        NOT     ECX
+        STD
+        DEC     EDI
+        MOV     AL,Chr
+        REPNE   SCASB
+        MOV     EAX,0
+        JNE     @@1
+        MOV     EAX,EDI
+        INC     EAX
+@@1:    CLD
+        POP     EDI
+end;
+
+function NamePart(FileName: PChar): PChar;
+
+ var
+  P: PChar;
+begin
+  P := StrRScan(FileName, '\');
+  if P = nil then
+  begin
+    P := StrRScan(FileName, ':');
+    if P = nil then P := FileName;
+  end;
+  NamePart := P;
+end;
+
+end.
+ 
